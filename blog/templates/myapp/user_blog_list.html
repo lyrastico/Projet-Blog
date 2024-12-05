@@ -1,0 +1,31 @@
+{% extends 'myapp/base.html' %}
+
+{% block title %}My Blogs{% endblock %}
+
+{% block content %}
+<h1>My Blog Posts</h1>
+
+{% if posts %}
+    <ul>
+        {% for post in posts %}
+        <li>
+            <a href="{% url 'blog_detail' post.id %}">{{ post.title }}</a>
+            <p>Published on {{ post.created_at }}</p>
+            <p>Created by: {{ post.author.username }}</p>
+
+            <!-- Si l'utilisateur est l'auteur, on peut supprimer ou éditer -->
+            {% if user == post.author %}
+                <a href="{% url 'blog_edit' post.id %}" class="btn btn-warning btn-sm">Edit</a>
+                <form method="post" action="{% url 'blog_delete' post.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>You have not created any blog posts yet.</p>
+{% endif %}
+
+{% endblock %}

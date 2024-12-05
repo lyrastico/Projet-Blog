@@ -1,0 +1,50 @@
+{% extends 'myapp/base.html' %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+<h1>{{ post.title }}</h1>
+<p>{{ post.content }}</p>
+<p>Published on {{ post.created_at }}</p>
+
+<h2>Comments</h2>
+<ul>
+    {% for comment in comments %}
+    <li>
+        <strong>{{ comment.name }}:</strong> {{ comment.body }}
+        
+        {% if user.is_authenticated and post.author == user %}
+        <!-- Formulaire de suppression du commentaire -->
+        <form method="post" action="{% url 'comment_delete' comment.id %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-link" style="color: red; font-size: 20px; border: none; background: transparent;">
+                &#10005; <!-- Symbole de croix -->
+            </button>
+        </form>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+
+<h3>Leave a Comment</h3>
+<form method="post">
+    {% csrf_token %}
+    {% if user.is_authenticated %}
+        <!-- Si l'utilisateur est connecté, on pré-remplit le champ nom avec son nom -->
+        <input type="text" name="name" value="{{ user.username }}" class="form-control" readonly>
+    {% else %}
+        <!-- Si l'utilisateur n'est pas connecté, on demande de saisir un nom -->
+        <label for="name">Your Name</label>
+        <input type="text" name="name" class="form-control" required>
+    {% endif %}
+    
+    <!-- Champ de texte pour le commentaire -->
+    <div class="form-group">
+        <label for="comment">Your Comment</label>
+        <textarea name="body" class="form-control" required></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add Comment</button>
+</form>
+
+{% endblock %}

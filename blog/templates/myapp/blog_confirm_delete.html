@@ -1,0 +1,18 @@
+{% extends 'myapp/base.html' %}
+
+{% block title %}Delete Blog Post{% endblock %}
+
+{% block content %}
+<h1>Are you sure you want to delete "{{ post.title }}"?</h1>
+
+{% if post.author == user %}
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Yes, delete</button>
+        <a href="{% url 'blog_list' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+{% else %}
+    <p>You do not have permission to delete this post.</p>
+{% endif %}
+
+{% endblock %}

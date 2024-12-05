@@ -1,0 +1,13 @@
+{% extends 'myapp/base.html' %}
+
+{% block title %}
+  Erreur 404 | Livre non trouvé
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <h1>Erreur 404</h1>
+    <p>Le livre que vous cherchez n'existe pas ou a été supprimé.</p>
+    <a href="{% url 'book_collection' %}" class="btn btn-secondary">Retour à la collection</a>
+  </div>
+{% endblock %}

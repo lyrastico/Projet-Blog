@@ -1,0 +1,18 @@
+{% extends 'myapp/base.html' %}
+
+{% block title %}New Blog Post{% endblock %}
+
+{% block content %}
+<h1>{% if form.instance.id %}Edit Blog Post{% else %}New Blog Post{% endif %}</h1>
+
+{% if user.is_authenticated %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+{% else %}
+    <p>You need to be logged in to create or edit a post.</p>
+{% endif %}
+
+{% endblock %}
