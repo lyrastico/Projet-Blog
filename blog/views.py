@@ -3,7 +3,7 @@ from .models import BlogPost, Comment
 from .forms import BlogPostForm, CommentForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
-from django.contrib.auth.views import LoginView, LogoutView  # Importation correcte
+from django.contrib.auth.views import LoginView, LogoutView
 
 def blog_list(request):
     posts = BlogPost.objects.all()
@@ -13,7 +13,6 @@ def blog_detail(request, post_id):
     post = get_object_or_404(BlogPost, id=post_id)
     
     if request.method == 'POST':
-        # Récupérer les données du formulaire et enregistrer le commentaire
         name = request.POST.get('name')
         body = request.POST.get('body')
         comment = Comment(post=post, name=name, body=body)
@@ -21,7 +20,6 @@ def blog_detail(request, post_id):
         
         return redirect('blog_detail', post_id=post.id)
 
-    # Récupérer les commentaires associés au post
     comments = post.comments.all()
     
     return render(request, 'myapp/blog_detail.html', {'post': post, 'comments': comments})
